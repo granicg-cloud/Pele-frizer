@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pele | Zakazivanje (prototip)</title>
+<style>
+:root{--bg:#f4efe6;--card:#fffdf8;--ink:#17140f;--mute:#6b6458;--line:#ded6c6;--brand:#17140f;--on:#f4efe6;--acc:#b8893b;--ok:#2f6b3f;--bad:#a63a2b;--sel:#f0e3c4}
+@media (prefers-color-scheme:dark){:root{--bg:#14120e;--card:#1e1b15;--ink:#f1ead9;--mute:#a39a87;--line:#38332a;--brand:#f1ead9;--on:#14120e;--acc:#d3a554;--ok:#6fbf84;--bad:#e07a68;--sel:#3a3120}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+.proto{background:var(--acc);color:#17140f;text-align:center;font-size:13px;padding:6px 12px;font-weight:600}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;max-width:1100px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px}
+.logo i{width:42px;height:42px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-style:normal;font-weight:800;font-family:Georgia,serif}
+.logo b{font-family:Georgia,serif;font-size:20px;letter-spacing:.04em}.logo small{display:block;color:var(--mute);font-size:12px;letter-spacing:.12em}
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{border:0;background:none;color:var(--ink);padding:8px 16px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer}
+.tabs button.on{background:var(--brand);color:var(--on)}
+main{max-width:1100px;margin:0 auto;padding:8px 16px 48px}
+h1{font-family:Georgia,serif;font-size:28px;margin:8px 0 4px}h2{font-size:15px;margin:0 0 10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
+.sub{color:var(--mute);margin:0 0 20px}
+.steps{display:flex;gap:6px;margin:0 0 20px;padding:0;list-style:none;flex-wrap:wrap}
+.steps li{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.steps li.on{background:var(--brand);color:var(--on);border-color:var(--brand)}.steps li.done{color:var(--ok);border-color:var(--ok)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;color:var(--ink);font:inherit}
+.opt:hover{border-color:var(--acc)}.opt.sel{background:var(--sel);border-color:var(--acc)}
+.opt b{display:block}.opt span{color:var(--mute);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;color:var(--ink);font:inherit;font-size:15px}
+.chip:hover{border-color:var(--acc)}.chip.sel{background:var(--brand);color:var(--on);border-color:var(--brand)}
+.chip:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.date{text-align:center;min-width:64px;padding:8px 10px}.date small{display:block;font-size:11px;text-transform:uppercase;opacity:.75}
+.row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{background:var(--brand);color:var(--on);border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.danger{background:var(--bad);color:#fff}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:14px;margin:12px 0 4px;color:var(--mute)}
+input,select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+.sum{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0}.sum dt{color:var(--mute)}.sum dd{margin:0;font-weight:600}
+.ok{border-left:4px solid var(--ok)}.note{font-size:13px;color:var(--mute);margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.stat b{font-size:24px;display:block;font-family:Georgia,serif}.stat span{font-size:13px;color:var(--mute)}
+.cal{display:grid;grid-template-columns:54px repeat(3,1fr);background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cal .h{padding:10px;font-weight:700;text-align:center;border-bottom:1px solid var(--line);background:var(--bg)}
+.times div{height:34px;font-size:12px;color:var(--mute);text-align:right;padding:2px 8px 0 0;border-top:1px solid var(--line)}
+.col{position:relative;border-left:1px solid var(--line);cursor:pointer}
+.col .ln{height:34px;border-top:1px solid var(--line)}.col .ln:hover{background:var(--sel)}
+.bk{position:absolute;left:3px;right:3px;border-radius:8px;padding:4px 8px;font-size:12px;line-height:1.3;overflow:hidden;cursor:pointer;background:var(--brand);color:var(--on)}
+.bk.web{background:var(--ok);color:#fff}.bk.blk{background:repeating-linear-gradient(45deg,var(--line),var(--line) 6px,var(--bg) 6px,var(--bg) 12px);color:var(--ink)}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;padding:16px;z-index:10}.dlg.on{display:grid}
+.dlg .panel{width:100%;max-width:400px;margin:0}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--mute);margin:0 0 10px;flex-wrap:wrap}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.hide{display:none}
+@media (max-width:600px){h1{font-size:23px}.cal{grid-template-columns:42px repeat(3,1fr)}.bk{font-size:11px;padding:3px 5px}}
+</style>
+</head>
+<body>
+<div class="proto">PROTOTIP: usluge, cene, radno vreme i imena frizera su primer, ne stvarni podaci salona</div>
+<header>
+  <div class="logo"><i>P</i><div><b>PELE</b><small>MUSKI FRIZER</small></div></div>
+  <div class="tabs"><button id="tabC" class="on">Za klijenta</button><button id="tabA">Za salon</button></div>
+</header>
+<main>
+
+<section id="client">
+  <h1>Zakazivanje termina</h1>
+  <p class="sub">Golsvordijeva 27, Beograd. Izaberi uslugu, frizera i termin.</p>
+  <ol class="steps" id="steps"></ol>
+  <div id="step1"><h2>1. Usluga</h2><div class="grid" id="svc"></div></div>
+  <div id="step2" class="hide"><h2>2. Frizer</h2><div class="grid" id="brb"></div></div>
+  <div id="step3" class="hide"><h2>3. Datum i vreme</h2><div class="chips" id="days"></div><h2 style="margin-top:20px">Slobodni termini</h2><div class="chips" id="slots"></div><p class="note" id="noslots"></p></div>
+  <div id="step4" class="hide"><h2>4. Tvoji podaci</h2>
+    <div class="panel"><dl class="sum" id="sum"></dl></div>
+    <label for="nm">Ime</label><input id="nm" autocomplete="off" placeholder="npr. Marko">
+    <label for="ph">Telefon (za podsetnik)</label><input id="ph" inputmode="tel" autocomplete="off" placeholder="06x xxx xxxx">
+    <p class="note">Dobijas podsetnik pre termina i link za otkazivanje. U prototipu se poruka ne salje.</p>
+  </div>
+  <div id="step5" class="hide"><div class="panel ok"><h1 style="margin-top:0">Termin je zakazan</h1><dl class="sum" id="sum2"></dl><p class="note">Podsetnik stize 2 sata pre termina (simulacija). Otkazivanje ili pomeranje: link u poruci.</p></div></div>
+  <div class="row"><button class="btn ghost hide" id="back">Nazad</button><button class="btn" id="next" disabled>Dalje</button><button class="btn hide" id="again">Novo zakazivanje</button></div>
+</section>
+
+<section id="admin" class="hide">
+  <h1>Kalendar salona</h1>
+  <p class="sub">Kliknite prazno polje da upisete termin (za pozive telefonom). Kliknite termin da ga otkazete.</p>
+  <div class="row" style="margin:0 0 14px"><div class="chips" id="adays"></div></div>
+  <div class="stats" id="stats"></div>
+  <div class="legend"><span><i style="background:var(--ok)"></i>Online</span><span><i style="background:var(--brand)"></i>Upisano rucno</span><span><i style="background:var(--line)"></i>Blokirano</span></div>
+  <div class="cal" id="cal"></div>
+  <div class="row"><button class="btn ghost" id="resetDemo">Vrati primer podataka</button></div>
+</section>
+</main>
+
+<div class="dlg" id="dlg"><div class="panel" id="dlgBody"></div></div>
+
+<script>
+const SERVICES=[
+ {id:'sis',name:'Muško šišanje',min:60,price:2000},
+ {id:'bra',name:'Brada',min:30,price:1000},
+ {id:'kom',name:'Šišanje i brada',min:90,price:2800},
+ {id:'dec',name:'Dečije šišanje',min:30,price:1500},
+ {id:'mas',name:'Mašinica',min:30,price:1200}
+];
+const BARBERS=[{id:'b1',name:'Pele'},{id:'b2',name:'Frizer 2'},{id:'b3',name:'Frizer 3'}];
+const OPEN=10*60,CLOSE=20*60,STEP=30,ROW=34;
+const DAYN=['ned','pon','uto','sre','čet','pet','sub'];
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const fmt=m=>pad(Math.floor(m/60))+':'+pad(m%60);
+const dkey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=new Date();today.setHours(0,0,0,0);
+const days=[...Array(8)].map((_,i)=>{const d=new Date(today);d.setDate(d.getDate()+i);return d}).filter(d=>d.getDay()!==0);
+const svcById=id=>SERVICES.find(s=>s.id===id);
+const brbName=id=>BARBERS.find(b=>b.id===id).name;
+const dlabel=d=>DAYN[d.getDay()]+' '+d.getDate()+'.'+(d.getMonth()+1)+'.';
+
+function seed(){
+  const k0=dkey(days[0]),k1=dkey(days[1]||days[0]);
+  return [
+   {id:1,b:'b1',d:k0,s:11*60,dur:60,svc:'Muško šišanje',name:'Nikola',phone:'',src:'rucno'},
+   {id:2,b:'b2',d:k0,s:12*60,dur:90,svc:'Šišanje i brada',name:'Stefan',phone:'',src:'web'},
+   {id:3,b:'b3',d:k0,s:15*60,dur:30,svc:'Brada',name:'Ivan',phone:'',src:'rucno'},
+   {id:4,b:'b1',d:k0,s:14*60,dur:60,svc:'',name:'Pauza',phone:'',src:'blok'},
+   {id:5,b:'b1',d:k1,s:10*60,dur:60,svc:'Muško šišanje',name:'Luka',phone:'',src:'web'},
+   {id:6,b:'b2',d:k1,s:16*60,dur:30,svc:'Dečije šišanje',name:'Mihajlo',phone:'',src:'web'}
+  ];
+}
+let bookings=[];
+try{const r=localStorage.getItem('pele-proto');bookings=r?JSON.parse(r):seed()}catch(e){bookings=seed()}
+let nid=Math.max(10,...bookings.map(b=>b.id))+1;
+function save(){try{localStorage.setItem('pele-proto',JSON.stringify(bookings))}catch(e){}}
+
+function freeFor(b,date,dur){
+  const list=bookings.filter(x=>x.b===b&&x.d===date);const out=[];
+  for(let t=OPEN;t+dur<=CLOSE;t+=STEP){
+    if(date===dkey(today)){const n=new Date();if(t<=n.getHours()*60+n.getMinutes())continue}
+    if(!list.some(x=>t<x.s+x.dur&&t+dur>x.s))out.push(t);
+  }return out;
+}
+function slotsFor(barber,date,dur){
+  if(barber!=='any')return freeFor(barber,date,dur).map(t=>({t,b:barber}));
+  const m=new Map();
+  BARBERS.forEach(br=>freeFor(br.id,date,dur).forEach(t=>{if(!m.has(t))m.set(t,br.id)}));
+  return [...m.entries()].sort((a,b)=>a[0]-b[0]).map(([t,b])=>({t,b}));
+}
+
+/* ---------- klijent ---------- */
+const st={step:1,svc:null,barber:null,date:null,slot:null};
+const STEPN=['Usluga','Frizer','Termin','Podaci','Gotovo'];
+function renderSteps(){$('#steps').innerHTML=STEPN.map((n,i)=>`<li class="${i+1===st.step?'on':i+1<st.step?'done':''}">${i+1}. ${n}</li>`).join('')}
+function renderSvc(){$('#svc').innerHTML=SERVICES.map(s=>`<button class="opt ${st.svc===s.id?'sel':''}" data-id="${s.id}"><b>${s.name}</b><span>${s.min} min, ${s.price.toLocaleString('sr')} din (primer)</span></button>`).join('')}
+function renderBrb(){
+  const all=[{id:'any',name:'Bilo ko slobodan',d:'Prvi slobodan termin'},...BARBERS.map(b=>({id:b.id,name:b.name,d:'Izaberi ovog frizera'}))];
+  $('#brb').innerHTML=all.map(b=>`<button class="opt ${st.barber===b.id?'sel':''}" data-id="${b.id}"><b>${b.name}</b><span>${b.d}</span></button>`).join('')}
+function renderDays(){
+  $('#days').innerHTML=days.map(d=>`<button class="chip date ${st.date===dkey(d)?'sel':''}" data-d="${dkey(d)}"><small>${DAYN[d.getDay()]}</small>${d.getDate()}.${d.getMonth()+1}.</button>`).join('');
+  renderSlots()}
+function renderSlots(){
+  if(!st.date){$('#slots').innerHTML='';$('#noslots').textContent='Izaberi datum.';return}
+  const dur=svcById(st.svc).min,l=slotsFor(st.barber,st.date,dur);
+  $('#slots').innerHTML=l.map(x=>`<button class="chip ${st.slot&&st.slot.t===x.t?'sel':''}" data-t="${x.t}" data-b="${x.b}">${fmt(x.t)}</button>`).join('');
+  $('#noslots').textContent=l.length?'':'Nema slobodnih termina za taj dan. Probaj drugi datum ili frizera.'}
+function showStep(n){
+  st.step=n;for(let i=1;i<=5;i++)$('#step'+i).classList.toggle('hide',i!==n);
+  $('#back').classList.toggle('hide',n===1||n===5);$('#next').classList.toggle('hide',n===5);$('#again').classList.toggle('hide',n!==5);
+  $('#next').textContent=n===4?'Potvrdi termin':'Dalje';renderSteps();check();
+  if(n===3)renderDays();if(n===4)$('#sum').innerHTML=summary();}
+function summary(){
+  const s=svcById(st.svc);
+  return `<dt>Usluga</dt><dd>${s.name}</dd><dt>Frizer</dt><dd>${brbName(st.slot.b)}</dd><dt>Datum</dt><dd>${dlabel(new Date(st.date+'T00:00'))}</dd><dt>Vreme</dt><dd>${fmt(st.slot.t)} do ${fmt(st.slot.t+s.min)}</dd><dt>Cena</dt><dd>${s.price.toLocaleString('sr')} din (primer)</dd>`}
+function check(){
+  const ok={1:!!st.svc,2:!!st.barber,3:!!st.slot,4:$('#nm').value.trim().length>1&&$('#ph').value.replace(/\D/g,'').length>=8}[st.step];
+  $('#next').disabled=!ok}
+$('#svc').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;st.svc=b.dataset.id;st.slot=null;renderSvc();check()};
+$('#brb').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;st.barber=b.dataset.id;st.slot=null;renderBrb();check()};
+$('#days').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;st.date=b.dataset.d;st.slot=null;renderDays();check()};
+$('#slots').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;st.slot={t:+b.dataset.t,b:b.dataset.b};renderSlots();check()};
+$('#nm').oninput=$('#ph').oninput=check;
+$('#next').onclick=()=>{
+  if(st.step<4){showStep(st.step+1);return}
+  const s=svcById(st.svc);
+  if(!freeFor(st.slot.b,st.date,s.min).includes(st.slot.t)){alert('Termin je upravo zauzet, izaberi drugi.');showStep(3);return}
+  bookings.push({id:nid++,b:st.slot.b,d:st.date,s:st.slot.t,dur:s.min,svc:s.name,name:$('#nm').value.trim(),phone:$('#ph').value.trim(),src:'web'});save();
+  $('#sum2').innerHTML=summary()+`<dt>Ime</dt><dd>${$('#nm').value.trim().replace(/[<>&]/g,'')}</dd>`;showStep(5)};
+$('#back').onclick=()=>showStep(st.step-1);
+$('#again').onclick=()=>{st.svc=st.barber=st.date=st.slot=null;$('#nm').value=$('#ph').value='';renderSvc();renderBrb();showStep(1)};
+
+/* ---------- admin ---------- */
+let adate=dkey(days[0]);
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderAdmin(){
+  $('#adays').innerHTML=days.map(d=>`<button class="chip date ${adate===dkey(d)?'sel':''}" data-d="${dkey(d)}"><small>${DAYN[d.getDay()]}</small>${d.getDate()}.${d.getMonth()+1}.</button>`).join('');
+  const day=bookings.filter(b=>b.d===adate),real=day.filter(b=>b.src!=='blok');
+  const total=BARBERS.length*(CLOSE-OPEN),used=day.reduce((a,b)=>a+b.dur,0);
+  const pr=real.reduce((a,b)=>{const s=SERVICES.find(x=>x.name===b.svc);return a+(s?s.price:0)},0);
+  $('#stats').innerHTML=`<div class="stat"><b>${real.length}</b><span>termina</span></div><div class="stat"><b>${Math.round(used/total*100)}%</b><span>popunjenost</span></div><div class="stat"><b>${real.filter(b=>b.src==='web').length}</b><span>online zakazano</span></div><div class="stat"><b>${pr.toLocaleString('sr')}</b><span>din, procena (primer cena)</span></div>`;
+  const rows=(CLOSE-OPEN)/STEP;let h='<div class="h"></div>'+BARBERS.map(b=>`<div class="h">${b.name}</div>`).join('');
+  h+=`<div class="times">${[...Array(rows)].map((_,i)=>`<div>${i%2===0?fmt(OPEN+i*STEP):''}</div>`).join('')}</div>`;
+  BARBERS.forEach(b=>{
+    h+=`<div class="col" data-b="${b.id}">${[...Array(rows)].map((_,i)=>`<div class="ln" data-t="${OPEN+i*STEP}"></div>`).join('')}`;
+    day.filter(x=>x.b===b.id).forEach(x=>{
+      const top=(x.s-OPEN)/STEP*ROW+1,hh=x.dur/STEP*ROW-2;
+      h+=`<div class="bk ${x.src==='web'?'web':x.src==='blok'?'blk':''}" data-id="${x.id}" style="top:${top}px;height:${hh}px"><b>${esc(x.name)}</b><br>${fmt(x.s)}${x.svc?' '+esc(x.svc):''}</div>`});
+    h+='</div>'});
+  $('#cal').innerHTML=h}
+$('#adays').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;adate=b.dataset.d;renderAdmin()};
+const dlg=$('#dlg');const closeDlg=()=>dlg.classList.remove('on');
+dlg.onclick=e=>{if(e.target===dlg)closeDlg()};
+$('#cal').onclick=e=>{
+  const bk=e.target.closest('.bk');
+  if(bk){const x=bookings.find(b=>b.id==bk.dataset.id);
+    $('#dlgBody').innerHTML=`<h2>${esc(x.name)}</h2><dl class="sum"><dt>Frizer</dt><dd>${brbName(x.b)}</dd><dt>Vreme</dt><dd>${fmt(x.s)} do ${fmt(x.s+x.dur)}</dd><dt>Usluga</dt><dd>${esc(x.svc||'Blokirano')}</dd><dt>Telefon</dt><dd>${esc(x.phone||'nije upisan')}</dd><dt>Izvor</dt><dd>${x.src==='web'?'Online':x.src==='blok'?'Blok':'Rucno'}</dd></dl><div class="row"><button class="btn danger" id="del">Otkazi termin</button><button class="btn ghost" id="cl">Zatvori</button></div>`;
+    dlg.classList.add('on');$('#cl').onclick=closeDlg;
+    $('#del').onclick=()=>{bookings=bookings.filter(b=>b.id!==x.id);save();closeDlg();renderAdmin()};return}
+  const ln=e.target.closest('.ln'),col=e.target.closest('.col');if(!ln)return;
+  const t=+ln.dataset.t,b=col.dataset.b;
+  $('#dlgBody').innerHTML=`<h2>Novi termin, ${brbName(b)}, ${fmt(t)}</h2><label for="an">Ime klijenta</label><input id="an" autocomplete="off"><label for="as">Usluga</label><select id="as">${SERVICES.map(s=>`<option value="${s.id}">${s.name} (${s.min} min)</option>`).join('')}<option value="blok">Blokiraj vreme (60 min)</option></select><p class="note" id="aerr"></p><div class="row"><button class="btn" id="ok">Upisi</button><button class="btn ghost" id="cl">Odustani</button></div>`;
+  dlg.classList.add('on');$('#cl').onclick=closeDlg;
+  $('#ok').onclick=()=>{
+    const v=$('#as').value,blok=v==='blok',s=blok?null:svcById(v),dur=blok?60:s.min,nm=$('#an').value.trim()||(blok?'Blokirano':'');
+    if(!nm){$('#aerr').textContent='Upisi ime.';return}
+    if(t+dur>CLOSE||bookings.some(x=>x.b===b&&x.d===adate&&t<x.s+x.dur&&t+dur>x.s)){$('#aerr').textContent='Termin se preklapa sa drugim ili prelazi radno vreme.';return}
+    bookings.push({id:nid++,b,d:adate,s:t,dur,svc:blok?'':s.name,name:nm,phone:'',src:blok?'blok':'rucno'});save();closeDlg();renderAdmin()}};
+$('#resetDemo').onclick=()=>{bookings=seed();save();renderAdmin()};
+
+/* ---------- tabovi ---------- */
+function tab(a){$('#client').classList.toggle('hide',a);$('#admin').classList.toggle('hide',!a);$('#tabC').classList.toggle('on',!a);$('#tabA').classList.toggle('on',a);if(a)renderAdmin()}
+$('#tabC').onclick=()=>tab(false);$('#tabA').onclick=()=>tab(true);
+renderSvc();renderBrb();showStep(1);
+</script>
+</body>
+</html>
